@@ -1,3 +1,4 @@
+const webpack =  require('webpack');
 module.exports = {
 	entry:"./index.js",
 	output:{
@@ -8,8 +9,7 @@ module.exports = {
 	devServer:{
 		contentBase:"./build",
 		historyApiFallback:true,
-		inline:true,
-		hot:true
+		inline:true
 	},
 	module:{
 		loaders:[
@@ -17,6 +17,11 @@ module.exports = {
 			{test:/\.less$/,loader:"style!css!less|postcss"},
 			{test:/\.scss$/,loader:"style!css!sass|postcss"}
 		]
-	}
+	},
+	plugins:[
+		new webpack.ProvidePlugin({
+			$:"jquery"
+		})
+	]
 
 }
