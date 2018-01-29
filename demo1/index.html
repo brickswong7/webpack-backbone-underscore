@@ -24,6 +24,11 @@
                     name:""
                 }
             },
+            initialize:function (argument) {
+                this.bind('change:name',function (argument) {
+                    
+                })
+            },
             constructor:function (argument) {
                 this.name = new Name(argument);
                 Backbone.Model.apply( this,arguments );
@@ -67,17 +72,16 @@
                 }catch (e){
                     throw 'type error'
                 }
-                var newWorld = new World({name:promptValue});
+                var newWorld = new World;
                 newWorld.set('name',promptValue,{validate:true});
                 if(newWorld.isValid()){
-                    this.worlds.add(newWorld)
+                    this.worlds.add(newWorld);
                 }
-                
             },
             addOneWorld: function(model) {
                 $("#error").remove();
                 $("#world-list").append("<li>这里是来自 <b>" + model.get('name') + "</b> 星球的问候：hello world！</li>");
-            }
+            },
         })
         //实例化AppView
         var appview = new AppView;
