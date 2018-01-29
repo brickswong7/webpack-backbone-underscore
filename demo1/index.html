@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
+<body>
+    <button id="check">新手报到</button>
+    <ul id="world-list">
+    </ul>
+    <a href="http://www.the5fire.com">更多教程</a>
+    <script src="http://the5fireblog.b0.upaiyun.com/staticfile/jquery-1.10.2.js"></script>
+    <script src="http://the5fireblog.b0.upaiyun.com/staticfile/underscore.js"></script>
+    <script src="http://the5fireblog.b0.upaiyun.com/staticfile/backbone.js"></script>
+    <script>
+
+    (function ($) {
+        function Name(arguments){
+           //console.log(arguments)
+        };
+
+        let World = Backbone.Model.extend({
+            defaults:function (argument) {
+                return {
+                    name:""
+                }
+            },
+            constructor:function (argument) {
+                this.name = new Name(argument);
+                Backbone.Model.apply( this,arguments );
+            },
+            parse: function(data, options) {
+                console.log( data )
+                this.name.reset(data.name);
+                return data.name;
+            },
+            validate:function(attrs,options){
+                if( attrs.name == "" || attrs.name == "do not konw" ){
+                    this.invalid();
+                    return 'error infos';
+                }
+            },
+            invalid:function (model,error) {
+                $("#error").remove()
+                $("#world-list").append("<li id='error'>请输入正确的名字</li>");
+            }
+        });
+        let Worlds = Backbone.Collection.extend({
+            initialize:function (argument,options) {
+                this.bind('add',options.view.addOneWorld)
+            },
+            comparator:'name'
+        });
+        const AppView = Backbone.View.extend({
+            el:$('body'),
+            initialize:function(models,options){
+                this.worlds = new Worlds('',{view:this});
+            },
+            events:{
+                "click #check" : "checkIn"
+            },
+            checkIn:function (argument) {
+                let promptValue = prompt('who is this?');
+                try{
+                    if(typeof promptValue  == 'undefined' ){
+                        promptValue = ''
+                    }     
+                }catch (e){
+                    throw 'type error'
+                }
+                var newWorld = new World({name:promptValue});
+                newWorld.set('name',promptValue,{validate:true});
+                if(newWorld.isValid()){
+                    this.worlds.add(newWorld)
+                }
+                
+            },
+            addOneWorld: function(model) {
+                $("#error").remove();
+                $("#world-list").append("<li>这里是来自 <b>" + model.get('name') + "</b> 星球的问候：hello world！</li>");
+            }
+        })
+        //实例化AppView
+        var appview = new AppView;
+    })(jQuery);
+    </script>
+</body>
+</html>
