@@ -49,6 +49,10 @@
                 $("#world-list").append("<li id='error'>请输入正确的名字</li>");
             }
         });
+
+
+
+
         let Worlds = Backbone.Collection.extend({
             initialize:function (argument,options) {
                 this.bind('add',options.view.addOneWorld)
@@ -74,6 +78,9 @@
                 }
                 var newWorld = new World;
                 newWorld.set('name',promptValue,{validate:true});
+                // newWorld.on("invalid",function (model,error) {
+                //     console.log()
+                // })
                 if(newWorld.isValid()){
                     this.worlds.add(newWorld);
                 }
