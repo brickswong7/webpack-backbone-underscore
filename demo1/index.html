@@ -83,12 +83,18 @@
                 // })
                 if(newWorld.isValid()){
                     this.worlds.add(newWorld);
+                    this.render(newWorld)
                 }
             },
             addOneWorld: function(model) {
                 $("#error").remove();
                 $("#world-list").append("<li>这里是来自 <b>" + model.get('name') + "</b> 星球的问候：hello world！</li>");
             },
+            render:function (model,options) {
+                this.worlds.each(function (model) {
+                    console.log(model.get('name'))
+                })
+            }
         })
         //实例化AppView
         var appview = new AppView;

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+    <a href="#actions">testActions</a>
+    <br>
+    <a href="#/posts/120">Post 120</a>
+    <br>
+    <a href="#/download/user/images/hey.gif">download gif</a>
+    <br>
+    <a href="#/dashboard/graph">Load Route/Action View</a>
+    <br>
+    <a href="#/manual">manual</a>
+    <script src="http://the5fireblog.b0.upaiyun.com/staticfile/jquery-1.10.2.js"></script>
+    <script src="http://the5fireblog.b0.upaiyun.com/staticfile/underscore.js"></script>
+    <script src="http://the5fireblog.b0.upaiyun.com/staticfile/backbone.js"></script>
+    <script type="text/javascript">
+var AppRouter = Backbone.Router.extend({
+
+    routes: {
+        "posts/:id" : "getPost",
+        //下面对应的链接为<a href="#/download/user/images/hey.gif">download gif</a>
+        "download/*path": "downloadFile",
+        //下面对应的链接为<a href="#/dashboard/graph">Load Route/Action View</a>
+        ":route/:action": "loadView",
+        "manual": "manual",//不要 把其他的url 路由 放在 * 后面
+        "*actions" : "defaultRoute",
+    },
+
+    getPost: function(id) {
+        alert(id);
+    },
+
+    defaultRoute : function(actions){
+        alert(actions);
+    },
+
+    downloadFile: function( path ){
+        alert(path); // user/images/hey.gif
+    },
+
+    loadView: function( route, action ){
+        alert(route + "_" + action); // dashboard_graph
+    },
+    manual: function() {
+        alert("call manual");
+        //这里需要解释的是navigate后面的两个参数。
+        //trigger表示触发事件，如果为false，
+        //则只是url变化，并不会触发事件，replace表示url替换，而不是前进到这个url，
+        //意味着启用该参数，浏览器的history不会记录这个变动。
+        app_router.navigate( '404', {trigger: true, replace: true});
+    }
+});
+
+var app_router = new AppRouter;
+Backbone.history.start();
+    </script>
+</body>
+</html>
